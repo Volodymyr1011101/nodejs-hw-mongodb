@@ -23,21 +23,29 @@ export const startServer = () => {
 
             res.json({
                 status: 200,
-                message: "Successfully retrieved movies.",
+                message: "Successfully found contacts!",
                 data,
             });
         } catch (error) {
             res.status(500).json({
                 status: 500,
-                message: "Error retrieving movies.",
+                message: "Error retrieving contacts.",
                 error: error.message,
             });
         }
     })
 
-    app.get('/api/contacts/:id', async (req, res) => {
+    app.get('/api/contacts/:id', async (req, res, error) => {
         try {
             const {id} = req.params;
+
+            if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+                return res.status(400).json({
+                    status: 400,
+                    message: "Invalid ID format. Must be a 24-character hex string."
+                });
+            }
+
             const data = await getContactById(id);
 
             if(!data){
@@ -49,10 +57,11 @@ export const startServer = () => {
 
             res.json({
                 status: 200,
-                message: `Successfully retrieved contact ${id}`,
+                message: `Successfully found contact with id ${id}!`,
                 data,
             });
-        }catch (error) {
+        }
+        catch (error) {
             console.log(error);
         }
     })

@@ -11,17 +11,17 @@ const contactSchema = new Schema({
     },
     email: {
         type: String,
-        required: true,
     },
     isFavorite: {
         type: Boolean,
-        required: true,
+        default: false,
     },
     contactType: {
         type: String,
-        required: true,
-    }
-})
+        enum: ['work', 'home', 'personal'],
+        default: 'personal',
+    },
+}, { timestamps: true });
 
 const ContactCollection = model("contact", contactSchema);
 
