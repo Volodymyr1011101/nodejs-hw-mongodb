@@ -8,6 +8,6 @@ export const initMongoCollection = async () => {
     const db = getEnvVariable('MONGODB_DB')
     try {
     await mongoose.connect(`mongodb+srv://${user}:${password}@${url}/${db}?retryWrites=true&w=majority&appName=Cluster0`)
-    console.log('Successfully connected to db')
+    console.log('Mongo connection successfully established!')
     }catch(err) {console.log(err); throw err; }
 }
