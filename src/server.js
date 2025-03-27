@@ -11,15 +11,16 @@ export const startServer = () => {
 
     app.use(cors());
     app.use(express.json());
-    // app.use(pino({
-    //     transport: {
-    //         target: 'pino-pretty',
-    //     }
-    // }))
+    app.use(pino({
+        transport: {
+            target: "pino-pretty",
+        }
+    }))
 
     app.get('/api/contacts', async (req, res) => {
         try {
             const data = await getContacts();
+
             res.json({
                 status: 200,
                 message: "Successfully retrieved movies.",
@@ -42,7 +43,7 @@ export const startServer = () => {
             if(!data){
                 return res.status(404).json({
                     status: 404,
-                    message: `Could not find ${id}`,
+                    message: `Could not find ${id}`
                 })
             }
 
@@ -56,19 +57,19 @@ export const startServer = () => {
         }
     })
 
-    app.get("/ping", (req, res) => {
+    app.get("/api/ping", (req, res) => {
         res.json({
             message: "Pong!",
         })
     })
 
-    // app.use((err, req, res) => {
-    //     res.status(404).json({
-    //         message: `${res.url} not found`,
-    //     })
-    // })
+    app.use((req, res) => {
+        res.status(404).json({
+            message: `${req.url} not found`,
+        })
+    })
 
-    app.use((err, req, res, next) => {
+    app.use((req, res) => {
         res.status(500).json({
             message: `${err}`,
         })
