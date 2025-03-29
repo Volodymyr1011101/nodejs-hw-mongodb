@@ -17,7 +17,7 @@ export const startServer = () => {
         }
     }))
 
-    app.get('/api/contacts', async (req, res) => {
+    app.get('/contacts', async (req, res) => {
         try {
             const data = await getContacts();
 
@@ -35,7 +35,7 @@ export const startServer = () => {
         }
     })
 
-    app.get('/api/contacts/:id', async (req, res, error) => {
+    app.get('/contacts/:id', async (req, res, error) => {
         try {
             const {id} = req.params;
 
@@ -66,7 +66,7 @@ export const startServer = () => {
         }
     })
 
-    app.get("/api/ping", (req, res) => {
+    app.get("/ping", (req, res) => {
         res.json({
             message: "Pong!",
         })
