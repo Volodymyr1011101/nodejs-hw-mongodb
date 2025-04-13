@@ -20,12 +20,12 @@ export const getContacts = async ({page = 1, perPage = 10, sortBy = '_id', sortO
         .limit(perPage)
         .sort({[sortBy]: sortOrder});
 
-    const totalItemsCount = await ContactCollection.countDocuments(query);
+    const totalItems = await ContactCollection.countDocuments(query);
 
-    const paginationData = calcPaginationData({page, perPage, totalItemsCount});
+    const paginationData = calcPaginationData({page, perPage, totalItems});
 
     return {
-        data: items, totalItemsCount, ...paginationData,
+        data: items, page, perPage, totalItems, ...paginationData,
     };
 }
 
@@ -36,7 +36,7 @@ export const addContact = (payload) => ContactCollection.create(payload)
 export const updateContact = async (_id, payload, options = {}) => {
     const {upsert = false} = options
     const result = await ContactCollection.findByIdAndUpdate({_id}, payload, {
-        new: true, upsert, runValidators: true, includeResultMetadata: true
+        new: true, upsert, runValidators: true
     })
 
     return result

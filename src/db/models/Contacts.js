@@ -18,10 +18,6 @@ const contactSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    age: {
-        type: Number,
-        required: true,
-    },
     contactType: {
         type: String,
         enum: typeList,

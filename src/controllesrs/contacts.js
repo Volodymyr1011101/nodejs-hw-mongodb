@@ -4,6 +4,7 @@ import {parsePaginationParams} from "../utils/parsePaginationParams.js";
 import {parseSortParams} from "../utils/parseSortParams.js";
 import {contactsSortFields} from "../db/models/Contacts.js";
 import {parseContactsFilterParams} from "../utils/filters/parseContactsFilterParams.js";
+
 export const getContactsController = async (req, res) => {
     const paginationParams = parsePaginationParams(req.query);
     const sortParams = parseSortParams(req.query, contactsSortFields);
@@ -11,7 +12,7 @@ export const getContactsController = async (req, res) => {
 
     const data = await getContacts({...paginationParams, ...sortParams, filters});
 
-    if(!data) {
+    if (!data) {
         throw createHttpError(400, "Could not find contacts");
     }
 
@@ -23,23 +24,23 @@ export const getContactsController = async (req, res) => {
 }
 
 export const getContactByIdController = async (req, res) => {
-        const {id} = req.params;
+    const {id} = req.params;
 
-        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-            throw createHttpError(404, `Invalid ID format. Must be a 24-character hex string.`);
-        }
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        throw createHttpError(404, `Invalid ID format. Must be a 24-character hex string.`);
+    }
 
-        const data = await getContactById(id);
+    const data = await getContactById(id);
 
-        if(!data){
-            throw createHttpError(404, `Could not find ${id}`);
-        }
+    if (!data) {
+        throw createHttpError(404, `Could not find ${id}`);
+    }
 
-        res.json({
-            status: 200,
-            message: `Successfully found contact with id ${id}!`,
-            data,
-        });
+    res.json({
+        status: 200,
+        message: `Successfully found contact with id ${id}!`,
+        data,
+    });
 }
 
 export const addContactController = async (req, res, next) => {
@@ -67,7 +68,7 @@ export const patchContactController = async (req, res) => {
     const {id} = req.params;
     const data = await updateContact(id, req.body);
 
-    if(!data){
+    if (!data) {
         throw createHttpError(404, `Contact not found`);
     }
 
@@ -81,17 +82,13 @@ export const patchContactController = async (req, res) => {
 export const deleteContactController = async (req, res) => {
     const {id} = req.params;
 
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        throw createHttpError(404, `Invalid ID format. Must be a 24-character hex string.`);
-    }
-
     const data = await deleteContact(id);
 
-    if (!data){
+    if (!data) {
         throw createHttpError(404, `Contact not found`);
     }
 
-    res.status(200).json({
+    res.status(204).json({
         status: 204,
         message: "Successfully deleted contact!",
         data,
