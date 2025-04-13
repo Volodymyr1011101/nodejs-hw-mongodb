@@ -4,7 +4,7 @@ import {sortList} from "../constants/index.js";
 
 export const getContacts = async ({page = 1, perPage = 10, sortBy = '_id', sortOrder = sortList[0], filters = {}}) => {
     const skip = (page - 1) * perPage;
-
+    console.log(filters)
     const query = {};
 
     if (filters.minYearsOld) {
@@ -13,6 +13,14 @@ export const getContacts = async ({page = 1, perPage = 10, sortBy = '_id', sortO
 
     if (filters.maxYearsOld) {
         query.age = {...query.age, $lte: filters.maxYearsOld};
+    }
+
+    if (filters.isFavourite) {
+        query.isFavourite = {...query.isFavourite, $eq: filters.isFavourite};
+    }
+
+    if (filters.contactType) {
+        query.contactType = {...query.contactType, $eq: filters.contactType};
     }
 
     const items = await ContactCollection.find(query)

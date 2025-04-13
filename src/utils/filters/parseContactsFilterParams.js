@@ -1,3 +1,5 @@
+import {typeList} from "../../constants/contacts.js";
+
 const parseNumberValue = (value) => {
     if (typeof value !== 'string') return;
 
@@ -8,13 +10,15 @@ const parseNumberValue = (value) => {
     return parsedNumberValue;
 }
 
-export const parseContactsFilterParams = ({minYearsOld, maxYearsOld}) => {
+export const parseContactsFilterParams = ({minYearsOld, maxYearsOld, isFavourite, type}) => {
     const parsedMinYearsOld = parseNumberValue(minYearsOld);
     const parsedMaxYearsOld = parseNumberValue(maxYearsOld);
-
+    const contactType = typeList.includes(type) ? type : undefined;
     return {
         minYearsOld: parsedMinYearsOld,
         maxYearsOld: parsedMaxYearsOld,
+        isFavourite,
+        contactType,
     }
 
 }
