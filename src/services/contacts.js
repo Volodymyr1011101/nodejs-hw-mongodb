@@ -1,16 +1,42 @@
 import ContactCollection from "../db/models/Contacts.js";
+import {calcPaginationData} from "../utils/calcPaginationData.js";
+import {sortList} from "../constants/index.js";
 
-export const getContacts = () => ContactCollection.find();
+export const getContacts = async ({page = 1, perPage = 10, sortBy = '_id', sortOrder = sortList[0], filters = {}}) => {
+    const skip = (page - 1) * perPage;
+
+    const query = {};
+
+    if (filters.minYearsOld) {
+        query.age = {...query.age, $gte: filters.minYearsOld};
+    }
+
+    if (filters.maxYearsOld) {
+        query.age = {...query.age, $lte: filters.maxYearsOld};
+    }
+
+    const items = await ContactCollection.find(query)
+        .skip(skip)
+        .limit(perPage)
+        .sort({[sortBy]: sortOrder});
+
+    const totalItemsCount = await ContactCollection.countDocuments(query);
+
+    const paginationData = calcPaginationData({page, perPage, totalItemsCount});
+
+    return {
+        data: items, totalItemsCount, ...paginationData,
+    };
+}
 
 export const getContactById = (id) => ContactCollection.findOne({_id: id})
 
 export const addContact = (payload) => ContactCollection.create(payload)
 
-export const updateContact = async (_id, payload, options ={}) => {
+export const updateContact = async (_id, payload, options = {}) => {
     const {upsert = false} = options
     const result = await ContactCollection.findByIdAndUpdate({_id}, payload, {
-        new: true,
-        upsert
+        new: true, upsert, runValidators: true, includeResultMetadata: true
     })
 
     return result
