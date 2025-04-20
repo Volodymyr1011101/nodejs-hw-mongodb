@@ -6,12 +6,15 @@ import {logger} from "./middlewares/logger.js";
 import {notFoundHandler} from "./middlewares/notFoundHandler.js";
 import {errorHandler} from "./middlewares/errorHandler.js";
 import contactsRouter from "./routes/contacts.js";
+import authRouter from "./routes/auth.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 export const startServer = () => {
     const app = express();
 
     app.use(cors());
+    app.use(cookieParser());
     app.use(express.json());
     app.use(logger)
 
@@ -20,7 +23,7 @@ export const startServer = () => {
             message: "Pong!",
         })
     })
-
+    app.use('/auth', authRouter);
     app.use('/contacts', contactsRouter);
 
     app.use(notFoundHandler)

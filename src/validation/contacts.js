@@ -1,11 +1,12 @@
 import Joi from 'joi'
 import {typeList} from "../constants/contacts.js";
+import {emailRegex} from "../constants/auth.js";
 
 export const addContactSchema = Joi.object({
     name: Joi.string().required().min(3).max(20).messages({
         "any.required": "The name is required",
     }),
-    email: Joi.string().email(),
+    email: Joi.string().pattern(emailRegex),
     phoneNumber: Joi.string().required().messages({
         "any.required": "The phone number is required",
         "string.base": "The phone number must be a string",
@@ -18,7 +19,7 @@ export const addContactSchema = Joi.object({
 
 export const updateContactSchema = Joi.object({
     name: Joi.string().min(3).max(20),
-    email: Joi.string().email(),
+    email: Joi.string().pattern(emailRegex),
     phoneNumber: Joi.string(),
     isFavourite: Joi.boolean(),
     contactType: Joi.string().valid(...typeList),

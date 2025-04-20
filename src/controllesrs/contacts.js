@@ -9,7 +9,7 @@ export const getContactsController = async (req, res) => {
     const paginationParams = parsePaginationParams(req.query);
     const sortParams = parseSortParams(req.query, contactsSortFields);
     const filters = parseContactsFilterParams(req.query);
-
+    filters.userId = req.user._id
     const data = await getContacts({...paginationParams, ...sortParams, filters});
 
     if (!data) {
@@ -25,12 +25,12 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res) => {
     const {id} = req.params;
-
+    const userId = req.user._id;
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
         throw createHttpError(404, `Invalid ID format. Must be a 24-character hex string.`);
     }
-
-    const data = await getContactById(id);
+    console.log(userId);
+    const data = await getContactById(id, userId);
 
     if (!data) {
         throw createHttpError(404, `Could not find ${id}`);
@@ -44,7 +44,9 @@ export const getContactByIdController = async (req, res) => {
 }
 
 export const addContactController = async (req, res, next) => {
-    const data = await addContact(req.body)
+    const {_id: userId} = req.user;
+
+    const data = await addContact({...req.body, userId});
 
     res.status(201).json({
         status: 201,
@@ -55,7 +57,8 @@ export const addContactController = async (req, res, next) => {
 
 export const upsertContactController = async (req, res) => {
     const {id} = req.params;
-    const data = await updateContact(id, req.body)
+    const userId = req.user._id;
+    const data = await updateContact(id, userId, req.body)
 
     res.status(200).json({
         status: 200,
@@ -66,7 +69,8 @@ export const upsertContactController = async (req, res) => {
 
 export const patchContactController = async (req, res) => {
     const {id} = req.params;
-    const data = await updateContact(id, req.body);
+    const userId = req.user._id;
+    const data = await updateContact(id, userId, req.body);
 
     if (!data) {
         throw createHttpError(404, `Contact not found`);
@@ -81,8 +85,9 @@ export const patchContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
     const {id} = req.params;
+    const userId = req.user._id;
 
-    const data = await deleteContact(id);
+    const data = await deleteContact(id, userId);
 
     if (!data) {
         throw createHttpError(404, `Contact not found`);
