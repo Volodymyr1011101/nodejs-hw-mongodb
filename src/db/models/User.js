@@ -3,7 +3,7 @@ import {handleServerError, setUpdateSettings} from "./hooks.js";
 import {emailRegex} from "../../constants/auth.js";
 
 const userSchema = new Schema({
-    username: {
+    name: {
         type: String,
         required: true,
     },
@@ -16,7 +16,12 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    verify: {
+        type: Boolean,
+        default: false,
+        required: true,
+    },
 }, {
     versionKey: false,
     timestamps: true,
