@@ -15,6 +15,7 @@ export const addContactSchema = Joi.object({
     contactType: Joi.string().valid(...typeList).messages({
         "any.required": "The contactType must be 'work' | 'home' | 'personal'",
     }),
+    photo: Joi.string(),
 })
 
 export const updateContactSchema = Joi.object({
@@ -23,4 +24,5 @@ export const updateContactSchema = Joi.object({
     phoneNumber: Joi.string(),
     isFavourite: Joi.boolean(),
     contactType: Joi.string().valid(...typeList),
+    photo: Joi.string(),
 })

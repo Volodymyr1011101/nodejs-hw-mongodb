@@ -22,11 +22,11 @@ contactsRouter.get('/', ctrlWrapper(getContactsController))
 
 contactsRouter.get('/:id', isValidId, ctrlWrapper(getContactByIdController))
 
-contactsRouter.post('/', validateBody(addContactSchema), ctrlWrapper(addContactController))
+contactsRouter.post('/', upload.single('photo'), validateBody(addContactSchema), ctrlWrapper(addContactController))
 
 contactsRouter.put('/:id', isValidId, validateBody(addContactSchema), ctrlWrapper(upsertContactController))
 
-contactsRouter.patch('/:id', isValidId, upload.single('photoUrl'), validateBody(updateContactSchema), ctrlWrapper(patchContactController))
+contactsRouter.patch('/:id', isValidId, upload.single('photo'), validateBody(updateContactSchema), ctrlWrapper(patchContactController))
 
 contactsRouter.delete('/:id', isValidId, ctrlWrapper(deleteContactController))
 

@@ -8,6 +8,7 @@ import {errorHandler} from "./middlewares/errorHandler.js";
 import contactsRouter from "./routes/contacts.js";
 import authRouter from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import {UPLOADS_FILES_DIR} from "./constants/index.js";
 
 dotenv.config();
 export const startServer = () => {
@@ -23,6 +24,8 @@ export const startServer = () => {
             message: "Pong!",
         })
     })
+    app.use('/uploads', express.static(UPLOADS_FILES_DIR))
+
     app.use('/auth', authRouter);
     app.use('/contacts', contactsRouter);
 

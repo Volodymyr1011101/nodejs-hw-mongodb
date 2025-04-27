@@ -23,6 +23,11 @@ const contactSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    photo: {
+        type: String,
+        required: false,
+        default: null,
+    },
     contactType: {
         type: String,
         enum: typeList,
