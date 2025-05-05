@@ -1,0 +1,62 @@
+tags:
+  - Contacts
+summary: Add a new contact
+operationId: AddContact
+description: Creates a new contact and optionally uploads a photo to Cloudinary
+security:
+  - bearerAuth: [ ]
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - email
+        properties:
+          name:
+            type: string
+            example: Volodymyr
+          phoneNumber:
+            type: string
+            example: 690322769
+          email:
+            type: string
+            format: email
+            example: voronkinvladimir328@gmail.com
+          contactType:
+            type: string
+            enum: [ work, home, personal ]
+            example: personal
+          isFavourite:
+            type: boolean
+            example: false
+          photo:
+            type: string
+            format: binary
+responses:
+  '201':
+    description: Successfully created a contact
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!
+            data:
+              $ref: '../../component/contact.yaml'
+  '400':
+    description: Invalid input
+  '401':
+    $ref: '../../statuses/401.yaml'

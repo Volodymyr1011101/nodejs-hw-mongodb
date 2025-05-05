@@ -1,0 +1,12 @@
+description: Contact not found or invalid ID format
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: Could not find 6817e2bc9ebe680de84324d7

@@ -1,0 +1,55 @@
+tags:
+  - Contacts
+summary: Get contacts List
+operationId: GetContacts
+description: Contact Item
+type: object
+required:
+  - _id
+  - name
+  - phoneNumber
+  - email
+  - userId
+  - isFavourite
+  - photo
+  - contactType
+  - createdAt
+  - updatedAt
+properties:
+  _id:
+    type: string
+    example: "6817e2bc9ebe680de84324d7"
+  name:
+    type: string
+    example: "Volodymyr"
+  phoneNumber:
+    type: string
+    example: "690322769"
+  email:
+    type: string
+    example: "voronkinvladimir328@gmail.com"
+  userId:
+    type: string
+    example: "680e45c68148af6d00c09909"
+  isFavourite:
+    type: boolean
+    example: false
+  photo:
+    type: string
+    format: uri
+    example: "https://res.cloudinary.com/dvx5lxune/image/upload/v1746395836/i7cavcpzdbrhrjomibgz.jpg"
+  contactType:
+    type: string
+    enum: [ personal, work, home ]
+    example: "personal"
+  createdAt:
+    type: string
+    format: date-time
+    example: "2025-05-04T21:57:16.343Z"
+  updatedAt:
+    type: string
+    format: date-time
+    example: "2025-05-04T21:57:16.343Z"
+  __v:
+    type: integer
+    example: 0

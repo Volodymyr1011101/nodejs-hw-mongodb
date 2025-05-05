@@ -9,6 +9,7 @@ import contactsRouter from "./routes/contacts.js";
 import authRouter from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import {UPLOADS_FILES_DIR} from "./constants/index.js";
+import {swaggerDocs} from "./middlewares/swaggerDocs.js";
 
 dotenv.config();
 export const startServer = () => {
@@ -28,6 +29,8 @@ export const startServer = () => {
 
     app.use('/auth', authRouter);
     app.use('/contacts', contactsRouter);
+
+    app.use('/api-docs', swaggerDocs())
 
     app.use(notFoundHandler)
 
